@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Farhan Sajid — interactive developer portfolio and CV.">
+  <title>Farhan Sajid</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f5f4ee;
+      --muted: #9d9caa;
+      --dim: #696977;
+      --night: #0a0a0e;
+      --panel: #121218;
+      --panel-2: #19191f;
+      --line: rgba(255,255,255,.13);
+      --accent: #d7ff63;
+      --accent-2: #a4d928;
+      --warm: #ffb18b;
+      --shadow: 0 42px 100px rgba(0,0,0,.45);
+      --ease: cubic-bezier(.22,.75,.2,1);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      overflow-x: hidden;
+      background: var(--night);
+      color: var(--ink);
+      font: 15px/1.6 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    body::before {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      background:
+        radial-gradient(circle at 75% 4%, rgba(215,255,99,.09), transparent 28rem),
+        radial-gradient(circle at 4% 55%, rgba(255,177,139,.06), transparent 24rem);
+      content: "";
+      pointer-events: none;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    ::selection { background: var(--accent); color: var(--night); }
+
+    .wrap { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+    .topbar {
+      position: absolute;
+      z-index: 20;
+      top: 0;
+      right: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 0;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; font-size: 13px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+    .brand-mark { display: grid; width: 31px; height: 31px; place-items: center; border: 1px solid rgba(215,255,99,.5); border-radius: 50%; color: var(--accent); font-size: 10px; }
+    .topnav { display: flex; align-items: center; gap: 25px; color: var(--muted); font-size: 12px; font-weight: 700; }
+    .topnav a:hover { color: var(--accent); }
+    .mode-toggle { padding: 8px 13px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; }
+    .mode-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero {
+      position: relative;
+      display: grid;
+      min-height: 100svh;
+      align-items: center;
+      padding: 130px 0 90px;
+    }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 370px; align-items: center; gap: 9vw; }
+    .kicker { display: flex; align-items: center; gap: 10px; margin: 0 0 22px; color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+    .kicker::before { width: 32px; height: 1px; background: var(--accent); content: ""; }
+    h1 { max-width: 730px; margin: 0; font-size: clamp(3.1rem, 8vw, 7.7rem); line-height: .91; letter-spacing: -.085em; }
+    h1 em { color: var(--accent); font-style: normal; }
+    .hero-copy { max-width: 475px; margin: 30px 0 0; color: var(--muted); font-size: clamp(1rem, 1.7vw, 1.2rem); }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 14px 27px; margin-top: 30px; color: var(--muted); font-size: 12px; font-weight: 700; }
+    .hero-meta strong { color: var(--ink); }
+    .portrait-frame { position: relative; width: min(100%, 350px); aspect-ratio: .82; margin-left: auto; overflow: hidden; border: 1px solid var(--line); border-radius: 180px 180px 26px 26px; background: linear-gradient(145deg, #363641, #17171e 62%); box-shadow: var(--shadow); transform: rotate(3deg); }
+    .portrait-frame::after { position: absolute; inset: 12px; border: 1px solid rgba(215,255,99,.26); border-radius: 170px 170px 18px 18px; content: ""; }
+    .portrait-art { position: absolute; inset: 0; display: grid; place-items: center; background: radial-gradient(circle at 50% 40%, rgba(255,177,139,.35), transparent 25%), linear-gradient(150deg, transparent 40%, rgba(215,255,99,.13)); font-size: 110px; filter: saturate(.8); }
+    .portrait-caption { position: absolute; z-index: 2; right: 24px; bottom: 23px; left: 24px; display: flex; justify-content: space-between; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .scroll-cue { position: absolute; bottom: 30px; left: 50%; display: flex; align-items: center; gap: 12px; color: var(--dim); font-size: 10px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; transform: translateX(-50%); }
+    .scroll-cue i { display: block; width: 1px; height: 34px; background: var(--accent); animation: scroll-pulse 1.6s ease-in-out infinite; }
+    @keyframes scroll-pulse { 0%,100% { opacity: .25; transform: scaleY(.55); transform-origin: top; } 50% { opacity: 1; transform: scaleY(1); } }
+
+    .experience { position: relative; height: 310vh; }
+    .stage { position: sticky; top: 0; display: grid; height: 100svh; min-height: 600px; place-items: center; overflow: hidden; perspective: 1300px; }
+    .stage::before { position: absolute; width: 75vw; height: 75vw; max-width: 900px; max-height: 900px; border: 1px solid rgba(255,255,255,.05); border-radius: 50%; box-shadow: 0 0 0 80px rgba(255,255,255,.012), 0 0 0 160px rgba(255,255,255,.008); content: ""; }
+    .stage-label { position: absolute; z-index: 3; top: 9%; left: 4%; color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+    .stage-label b { color: var(--accent); }
+    .device {
+      position: relative;
+      z-index: 2;
+      width: min(78vw, 1010px);
+      aspect-ratio: 1.46;
+      transform: translate3d(0, 18vh, 0) rotateX(7deg) scale(.46);
+      transform-origin: center center;
+      will-change: transform;
+    }
+    .monitor {
+      position: absolute;
+      inset: 0 0 11%;
+      border: 10px solid #292a31;
+      border-bottom-width: 15px;
+      border-radius: 22px;
+      background: #07070a;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.16), 0 25px 0 -12px #292a31, 0 48px 80px rgba(0,0,0,.55);
+      overflow: hidden;
+    }
+    .monitor::before { position: absolute; z-index: 5; top: 0; right: 0; left: 0; height: 18px; background: linear-gradient(90deg, rgba(255,255,255,.12), transparent 35%, transparent 65%, rgba(255,255,255,.05)); content: ""; }
+    .screen { position: absolute; inset: 14px; overflow: hidden; border-radius: 8px; background: #111116; box-shadow: 0 0 60px rgba(215,255,99,.08); }
+    .monitor-stand { position: absolute; right: 42%; bottom: 2%; left: 42%; height: 12%; background: linear-gradient(90deg, #202128, #383941, #202128); clip-path: polygon(20% 0,80% 0,100% 100%,0 100%); }
+    .monitor-base { position: absolute; right: 31%; bottom: 0; left: 31%; height: 5%; border-radius: 50% 50% 8px 8px; background: #26272e; box-shadow: 0 12px 30px rgba(0,0,0,.3); }
+    .device-note { position: absolute; right: 0; bottom: -34px; left: 0; color: var(--dim); font-size: 11px; text-align: center; }
+
+    .screen-ui { height: 100%; padding: 17px 20px; color: #f4f4ef; font-size: 10px; }
+    .screen-ui .ui-nav { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.1); padding-bottom: 11px; }
+    .ui-logo { color: var(--accent); font-size: 11px; font-weight: 900; letter-spacing: .08em; }
+    .ui-links { display: flex; gap: 18px; color: #9999a4; }
+    .ui-hero { display: grid; grid-template-columns: 1fr .45fr; align-items: center; gap: 20px; height: 47%; }
+    .ui-hero h2 { margin: 0; max-width: 450px; font-size: clamp(1.7rem, 3vw, 3.4rem); line-height: .94; letter-spacing: -.08em; }
+    .ui-hero h2 span { color: var(--accent); }
+    .ui-hero p { color: #9999a4; font-size: 11px; }
+    .ui-orb { width: min(17vw, 155px); aspect-ratio: 1; margin: auto; border: 1px solid rgba(215,255,99,.55); border-radius: 50%; background: radial-gradient(circle at 35% 30%, #e8ff9b, #5d762b 14%, #151a0c 48%, transparent 49%); box-shadow: 0 0 70px rgba(215,255,99,.16); }
+    .ui-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .ui-stat { padding: 12px; border: 1px solid rgba(255,255,255,.11); border-radius: 8px; background: rgba(255,255,255,.04); }
+    .ui-stat b { display: block; margin-bottom: 4px; color: var(--accent); font-size: 15px; }
+    .ui-stat span { color: #8d8d98; }
+
+    .phone-experience { position: relative; height: 245vh; }
+    .phone-stage { position: sticky; top: 0; display: grid; height: 100svh; min-height: 620px; place-items: center; overflow: hidden; perspective: 1100px; }
+    .phone-stage .stage-label { top: 11%; }
+    .phone {
+      position: relative;
+      z-index: 2;
+      width: min(28vw, 300px);
+      min-width: 210px;
+      aspect-ratio: .49;
+      padding: 9px;
+      border: 1px solid #4a4b52;
+      border-radius: 42px;
+      background: linear-gradient(140deg, #474850, #121318 35%, #303139);
+      box-shadow: 20px 30px 70px rgba(0,0,0,.5), inset 0 0 0 2px #111217;
+      transform: translate3d(0, 26vh, 0) rotateY(-12deg) rotateZ(4deg) scale(.72);
+      will-change: transform;
+    }
+    .phone::before { position: absolute; z-index: 4; top: 8px; left: 50%; width: 32%; height: 20px; border-radius: 0 0 15px 15px; background: #050507; content: ""; transform: translateX(-50%); }
+    .phone::after { position: absolute; z-index: 4; inset: 0; border-radius: 42px; box-shadow: inset -10px -8px 20px rgba(255,255,255,.06), inset 10px 0 20px rgba(255,255,255,.04); content: ""; pointer-events: none; }
+    .phone-screen { position: absolute; inset: 9px; overflow: hidden; border-radius: 34px; background: #0e0e13; }
+    .mobile-ui { height: 100%; padding: 47px 18px 22px; background: linear-gradient(155deg, #191922, #0d0d11); }
+    .mobile-ui .ui-nav { padding-bottom: 19px; }
+    .mobile-ui .ui-links { display: none; }
+    .mobile-ui .ui-hero { display: block; height: auto; padding: 54px 0 28px; }
+    .mobile-ui .ui-hero h2 { font-size: clamp(2.2rem, 8vw, 3.8rem); }
+    .mobile-ui .ui-hero p { margin-top: 20px; font-size: 13px; }
+    .mobile-ui .ui-orb { width: 130px; margin: 22px 0 28px auto; }
+    .mobile-ui .ui-stats { grid-template-columns: 1fr 1fr; }
+    .mobile-ui .ui-stat:last-child { grid-column: span 2; }
+
+    .content { padding: 120px 0 80px; }
+    .content-intro { display: grid; grid-template-columns: .55fr 1fr; gap: 12vw; padding-bottom: 110px; }
+    .content h2 { margin: 0; font-size: clamp(2.3rem, 5vw, 5.2rem); line-height: .94; letter-spacing: -.075em; }
+    .content h2 span { color: var(--accent); }
+    .content-copy { color: var(--muted); font-size: 17px; }
+    .content-copy p { margin: 0 0 22px; }
+    .content-copy strong { color: var(--ink); }
+    .data-grid { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--line); }
+    .data-block { min-height: 240px; padding: 27px 24px 24px 0; border-bottom: 1px solid var(--line); }
+    .data-block:nth-child(even) { padding-left: 32px; border-left: 1px solid var(--line); }
+    .data-block h3 { margin: 0 0 24px; color: var(--accent); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
+    .data-block p { max-width: 430px; margin: 0; color: var(--muted); }
+    .skill-list { display: flex; flex-wrap: wrap; gap: 9px; }
+    .skill-list span { padding: 8px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); font-size: 12px; }
+    .project-list { display: grid; gap: 14px; }
+    .project-line { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 13px; border-bottom: 1px solid var(--line); }
+    .project-line b { font-size: 16px; }
+    .project-line a { color: var(--accent); font-size: 11px; font-weight: 800; white-space: nowrap; }
+    .project-line a:hover { text-decoration: underline; }
+    .project-line span { color: var(--muted); font-size: 12px; text-align: right; }
+    .footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 100px 0 46px; }
+    .footer h2 { max-width: 600px; }
+    .footer-note { color: var(--muted); font-size: 12px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 16px; color: var(--accent); font-size: 12px; font-weight: 800; }
+
+    .reveal { opacity: 0; transform: translateY(22px); animation: reveal .8s var(--ease) forwards; }
+    .reveal.d2 { animation-delay: .12s; }
+    .reveal.d3 { animation-delay: .23s; }
+    @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .device, .phone { transform: none !important; }
+    }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 32px, 560px); }
+      .topnav a { display: none; }
+      .topbar { padding: 20px 0; }
+      .hero-grid, .content-intro { grid-template-columns: 1fr; gap: 48px; }
+      .portrait-frame { width: 235px; margin: 0; }
+      .hero { padding-top: 110px; }
+      .device { width: 94vw; min-width: 520px; transform-origin: center; }
+      .monitor { border-width: 6px; border-bottom-width: 10px; }
+      .screen { inset: 8px; }
+      .stage-label { left: 5%; }
+      .phone { width: min(63vw, 290px); }
+      .content { padding-top: 90px; }
+      .data-grid { grid-template-columns: 1fr; }
+      .data-block, .data-block:nth-child(even) { min-height: auto; padding: 28px 0; border-left: 0; }
+      .footer { display: block; padding-top: 75px; }
+      .footer-links { margin-top: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar wrap">
+    <a class="brand" href="#top" aria-label="Farhan Sajid home"><span class="brand-mark">FS</span><span>Farhan Sajid</span></a>
+    <nav class="topnav" aria-label="Primary navigation">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+      <button class="mode-toggle" id="mode-toggle" type="button">Light mode</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-grid">
+        <div>
+          <p class="kicker reveal">Computer science student</p>
+          <h1 id="hero-title" class="reveal d2">Learning, building, and making the web <em>useful.</em></h1>
+          <p class="hero-copy reveal d3">I’m Farhan Sajid, a computer science student who enjoys turning ideas into clear, practical websites. Scroll to explore two of my live web projects as a desktop and mobile experience.</p>
+          <div class="hero-meta reveal d3"><span>Student developer</span><span>Open to learning opportunities</span></div>
+        </div>
+        <div class="portrait-frame reveal d2" role="img" aria-label="Editable professional portrait placeholder for Farhan Sajid">
+          <div class="portrait-art">🧑‍💻</div>
+          <div class="portrait-caption"><span>Portrait placeholder</span><span>2026</span></div>
+        </div>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><i></i><span>Scroll to enter</span></div>
+    </section>
+
+    <section class="experience" id="desktop-experience" aria-label="Scroll-controlled desktop portfolio experience">
+      <div class="stage">
+        <div class="stage-label">01 / <b>Desktop interface</b></div>
+        <div class="device" id="desktop-device">
+          <div class="monitor">
+            <div class="screen">
+              <div class="screen-ui">
+                <div class="ui-nav"><span class="ui-logo">FS / CAMPUS CAFE</span><span class="ui-links"><span>Home</span><span>Menu</span><span>Order</span></span></div>
+                <div class="ui-hero"><div><h2>Campus Café: a friendly place for <span>good coffee.</span></h2><p>A three-page university coffee shop website built with HTML, CSS, and JavaScript.</p></div><div class="ui-orb"></div></div>
+                <div class="ui-stats"><div class="ui-stat"><b>03</b><span>Pages designed</span></div><div class="ui-stat"><b>HTML</b><span>Semantic structure</span></div><div class="ui-stat"><b>LIVE</b><span>Vercel + Pages</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="monitor-stand"></div><div class="monitor-base"></div><div class="device-note">Scroll-linked zoom · desktop view</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="phone-experience" id="mobile-experience" aria-label="Scroll-controlled mobile portfolio experience">
+      <div class="phone-stage">
+        <div class="stage-label">02 / <b>Mobile interface</b></div>
+        <div class="phone" id="phone-device">
+          <div class="phone-screen">
+            <div class="mobile-ui">
+              <div class="ui-nav"><span class="ui-logo">FS / PHOTO SOCIETY</span><span class="ui-links"><span>Menu</span></span></div>
+              <div class="ui-hero"><h2>University<br><span>Photography Society.</span></h2><p>A responsive three-page site for events, registration, and sharing a love of photography.</p><div class="ui-orb"></div></div>
+              <div class="ui-stats"><div class="ui-stat"><b>03</b><span>Pages</span></div><div class="ui-stat"><b>CSS</b><span>Responsive layout</span></div><div class="ui-stat"><b>LIVE</b><span>GitHub Pages</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content wrap" id="about">
+      <div class="content-intro">
+        <h2>More than a <span>job title.</span></h2>
+        <div class="content-copy">
+          <p><strong>About me</strong></p>
+          <p>I’m Farhan Sajid, a computer science student focused on building a strong foundation in web development and software engineering. I enjoy learning by creating useful, responsive interfaces.</p>
+          <p>My current toolkit includes HTML, CSS, Java, JavaScript, Git, and GitHub.</p>
+        </div>
+      </div>
+      <div class="data-grid">
+        <article class="data-block">
+          <h3>Education</h3>
+          <p><strong>Computer Science student</strong><br>[Add institution and expected graduation year]</p>
+          <p style="margin-top:16px">Add certifications, coursework, or other learning milestones here.</p>
+        </article>
+        <article class="data-block">
+          <h3>Technical skills</h3>
+          <div class="skill-list"><span>Responsive design</span><span>Semantic HTML</span><span>CSS layouts</span><span>JavaScript fundamentals</span><span>Version control</span></div>
+        </article>
+        <article class="data-block">
+          <h3>Languages &amp; tools</h3>
+          <div class="skill-list"><span>HTML</span><span>CSS</span><span>Java</span><span>JavaScript</span><span>Git</span><span>GitHub</span></div>
+        </article>
+        <article class="data-block" id="projects">
+          <h3>Selected projects</h3>
+          <div class="project-list">
+            <div class="project-line"><b>Campus Café</b><span>University coffee shop · <a href="https://cit331-lab4-campus-cafe-five.vercel.app" target="_blank" rel="noreferrer">Live site ↗</a></span></div>
+            <div class="project-line"><b>Photography Society</b><span>University society · <a href="https://ifarhansajid.github.io/cit331-assignment1-f26-bscs-0019/" target="_blank" rel="noreferrer">Live site ↗</a></span></div>
+            <div class="project-line"><b>Source code</b><span><a href="https://github.com/ifarhansajid" target="_blank" rel="noreferrer">GitHub profile ↗</a></span></div>
+          </div>
+        </article>
+        <article class="data-block">
+          <h3>Experience</h3>
+          <p><strong>Student projects</strong><br>Building coursework and personal web projects while developing practical front-end skills.</p>
+          <p style="margin-top:16px">Add internships, freelance work, or other experience here when available.</p>
+        </article>
+        <article class="data-block" id="contact">
+          <h3>Contact</h3>
+          <p>Have an idea or want to connect? I’d be happy to hear from you.</p>
+          <p style="margin-top:16px"><strong><a href="mailto:adminfarhansajid@gmail.com">adminfarhansajid@gmail.com</a></strong><br><a href="https://github.com/ifarhansajid" target="_blank" rel="noreferrer">GitHub ↗</a> · [LinkedIn]</p>
+        </article>
+      </div>
+      <footer class="footer">
+        <div><p class="kicker">Thanks for scrolling</p><h2>Let’s make the next screen <span>worth entering.</span></h2></div>
+        <div class="footer-note">© 2026 Farhan Sajid<br>Built with HTML, CSS, and JavaScript.</div>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    const root = document.documentElement;
+    const modeToggle = document.querySelector("#mode-toggle");
+    const desktop = document.querySelector("#desktop-device");
+    const phone = document.querySelector("#phone-device");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    modeToggle.addEventListener("click", () => {
+      const light = root.dataset.theme === "light";
+      root.dataset.theme = light ? "dark" : "light";
+      root.style.setProperty("--night", light ? "#0a0a0e" : "#f2f0e9");
+      root.style.setProperty("--ink", light ? "#f5f4ee" : "#121218");
+      root.style.setProperty("--muted", light ? "#9d9caa" : "#656570");
+      root.style.setProperty("--panel", light ? "#121218" : "#ffffff");
+      modeToggle.textContent = light ? "Light mode" : "Dark mode";
+    });
+
+    function clamp(value, min, max) { return Math.min(max, Math.max(min, value)); }
+    function progressFor(element) {
+      return clamp((window.scrollY - element.offsetTop) / (element.offsetHeight - window.innerHeight), 0, 1);
+    }
+    function renderScrollExperience() {
+      if (reduceMotion.matches) return;
+      const desktopProgress = progressFor(document.querySelector("#desktop-experience"));
+      const desktopScale = .46 + Math.sin(desktopProgress * Math.PI) * .67;
+      const desktopY = 18 - desktopProgress * 27;
+      const desktopX = desktopProgress > .5 ? (desktopProgress - .5) * 22 : 0;
+      desktop.style.transform = `translate3d(${desktopX}vw, ${desktopY}vh, 0) rotateX(${7 - desktopProgress * 7}deg) scale(${desktopScale})`;
+
+      const phoneProgress = progressFor(document.querySelector("#mobile-experience"));
+      const phoneScale = .72 + Math.sin(phoneProgress * Math.PI) * .5;
+      const phoneY = 26 - phoneProgress * 40;
+      const phoneRotate = -12 + phoneProgress * 12;
+      phone.style.transform = `translate3d(0, ${phoneY}vh, 0) rotateY(${phoneRotate}deg) rotateZ(${4 - phoneProgress * 4}deg) scale(${phoneScale})`;
+    }
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(() => { renderScrollExperience(); ticking = false; });
+        ticking = true;
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", renderScrollExperience);
+    renderScrollExperience();
+  </script>
+</body>
+</html>
